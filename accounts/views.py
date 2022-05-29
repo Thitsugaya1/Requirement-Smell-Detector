@@ -701,13 +701,13 @@ def analisisRU(request):
 	for requisito in RequisitoDeUsuario.objects.values():
 		if requisito['proyecto_id_id'] == projectDetail['id']:
 			for req in AnalizisRu.objects.values():
-				if requisito['id'] == req['ru_codigo_id'] and requisito['version'] == req['version']:
+				if requisito['id'] == req['ru_codigo_id']:
 					requisito['smells'] = req
-					for req in AnalisisRuDesc.objects.values():
-						if requisito['id'] == req['ru_codigo_id'] and requisito['version'] == req['version']:
-							requisito['smells_desc'] = req
-							analisisReqUsuario+=[requisito]
-							break	
+			for req in AnalisisRuDesc.objects.values():
+				if requisito['id'] == req['ru_codigo_id']:
+					requisito['smells_desc'] = req
+			analisisReqUsuario+=[requisito]
+				
 	#print (requisito)
 	context = {
 		'admin':administrador,
@@ -769,72 +769,73 @@ def editRequisitoUsuario(request):
 			break
 
 	requisito = get_object_or_404(RequisitoDeUsuario, pk=reqToEditT)
-	print (int(requisitoToEdit['version'])+1)
 	
-	"""if request.method == 'POST':
-		codigo = requisitoToEdit['codigo']
-		titulo = request.POST['tituloReqEdit']
-		prioridad = request.POST['prioridadReq']
-		tipo = request.POST['tipoReq']
-		fuente = request.POST['fuenteReq']
-		estabilidad = request.POST['estabilidadReq']
-		urgencia = request.POST['urgenciaReq']
-		estado = request.POST['estadoReq']
-		costo = request.POST['costoReq']
-		descripcion = request.POST['descripcionReq']
-		version = int(requisitoToEdit['version'])+1
+	
+	if request.method == 'POST':
+		if not(request.POST.__contains__('editReq')):
+			codigo = requisitoToEdit['codigo']
+			titulo = request.POST['tituloReqEdit']
+			prioridad = request.POST['prioridadReq']
+			tipo = request.POST['tipoReq']
+			fuente = request.POST['fuenteReq']
+			estabilidad = request.POST['estabilidadReq']
+			urgencia = request.POST['urgenciaReq']
+			estado = request.POST['estadoReq']
+			costo = request.POST['costoReq']
+			descripcion = request.POST['descripcionReq']
+			version = int(requisitoToEdit['version'])+1
 
-		data = {
-			'codigo':requisitoToEdit['codigo'],
-			'titulo':titulo,
-			'prioridad':prioridad, 
-			'tipo': tipo, 
-			'fuente':fuente,
-			'estabilidad':estabilidad,
-			'urgencia': urgencia, 
-			'estado': estado,
-			'costo': costo,
-			'descripcion': descripcion,
-			'version': version,
-			'proyecto_id': requisitoToEdit['proyecto_id']
-		}
+			data = {
+				'codigo':requisitoToEdit['codigo'],
+				'titulo':titulo,
+				'prioridad':prioridad, 
+				'tipo': tipo, 
+				'fuente':fuente,
+				'estabilidad':estabilidad,
+				'urgencia': urgencia, 
+				'estado': estado,
+				'costo': costo,
+				'descripcion': descripcion,
+				'version': version,
+				'proyecto_id': requisitoToEdit['proyecto_id_id']
+			}
 
-		edit = userRequirementForm(data, instance=requisito)
-		if edit.is_valid():
-			edit.save()
-			analisis = Analisis()
-			resultado, resultadoDesc, feedbacktitle, feedbackdesc = analisis.iniciarAnalisis(titulo, "RU", descripcion)
-			for sysRequi in RequisitoDeUsuario.objects.values():
-				if sysRequi['titulo'] == titulo:
-					idReq = sysRequi['id']
-					break
-			if resultado == "":
-				resultado = "-"
-				feedbacktitle = "-"
-			if resultadoDesc == "":
-				resultadoDesc = "-"
-				feedbackdesc = "-"
-			dataAnalisis = {
-				'smell_codigo': resultado,
-				'version':version,
-				'feedback': feedbacktitle,
-				'ru_codigo': idReq
-			}
-			dataAnalisisDesc = {
-				'smell_codigo': resultadoDesc,
-				'version':version,
-				'feedback': feedbackdesc,
-				'ru_codigo': idReq
-			}
-			analisisDeRU = analisisRUform(dataAnalisis)
-			analisisDeRUDesc = analisisRUDescform(dataAnalisisDesc)
-			if analisisDeRU.is_valid() and analisisDeRUDesc.is_valid():
-				analisisDeRU.save()
-				analisisDeRUDesc.save()
-				messages.info(request, 'Requisito editado con exito')
+			edit = userRequirementForm(data, instance=requisito)
+			if edit.is_valid():
+				edit.save()
+				analisis = Analisis()
+				resultado, resultadoDesc, feedbacktitle, feedbackdesc = analisis.iniciarAnalisis(titulo, "RU", descripcion)
+				for sysRequi in RequisitoDeUsuario.objects.values():
+					if sysRequi['titulo'] == titulo:
+						idReq = sysRequi['id']
+						break
+				if resultado == "":
+					resultado = "-"
+					feedbacktitle = "-"
+				if resultadoDesc == "":
+					resultadoDesc = "-"
+					feedbackdesc = "-"
+				dataAnalisis = {
+					'smell_codigo': resultado,
+					'version':version,
+					'feedback': feedbacktitle,
+					'ru_codigo': idReq
+				}
+				dataAnalisisDesc = {
+					'smell_codigo': resultadoDesc,
+					'version':version,
+					'feedback': feedbackdesc,
+					'ru_codigo': idReq
+				}
+				analisisDeRU = analisisRUform(dataAnalisis)
+				analisisDeRUDesc = analisisRUDescform(dataAnalisisDesc)
+				if analisisDeRU.is_valid() and analisisDeRUDesc.is_valid():
+					analisisDeRU.save()
+					analisisDeRUDesc.save()
+					messages.info(request, 'Requisito editado con exito')
 
 	else:
-		formEditReq = userRequirementForm(instance=requisito)"""
+		formEditReq = userRequirementForm(instance=requisito)
 
 	#print (edit)
 	context = {
