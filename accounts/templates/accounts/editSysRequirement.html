@@ -1,0 +1,150 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<br>
+<div class="row">
+  <!--Sidevar-->
+  {% include 'accounts/sidebar.html' %}
+  <div class="col-md">
+    <div class="card card-body">
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <h2>Editar requisito de sistema</h2>
+        </div>
+
+        <form id="editSysReq" action="{% url 'accounts:requisito-sistema' %}" method="POST">
+          {% csrf_token %}
+            <div class="form-group row">
+              <!--CODIGO-->
+              <div class="col-md-2 clearfix">
+                <label for="codigoReq" class="control-label text-right required">Codigo</label>
+                <input class="form-control" name="codigoReq" id="codigoReq" type="text" value="{{ req.codigo }}" disabled="disabled" required="required" data-validation-required-message="Inidique el codigo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--TITULO-->
+              <div class="col-md-6 clearfix">
+                <label for="tituloReq" class="control-label text-right required">Titulo</label>
+                <input class="form-control" name="tituloReq" id="tituloReq" type="text" value="{{ req.titulo }}" required="required" data-validation-required-message="Inidique el titulo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--TIPO-->
+              <div class="col-md-3 clearfix">
+                <label for="tipoReq" class="control-label text-right required">Tipo</label>
+                <select class="form-control" name="tipoReq" id="tipoReq" type="text" placeholder="Tipo *" required="required" data-validation-required-message="Inidique el tipo del requisito">
+                  <p class="help-block text-danger"></p>
+                  {% if req.tipo == "Funcional" %}
+                    <option value="Funcional" selected>Funcional</option>
+                  {% else %}
+                    <option value="Funcional">Funcional</option>
+                  {% endif %}
+                  {% if req.tipo == "No Funcional" %}
+                    <option value="No Funcional" selected>No Funcional</option>
+                  {% else %}
+                    <option value="No Funcional">No Funcional</option>
+                  {% endif %}
+                  {% if req.tipo == "Restriccion" %}
+                    <option value="Restriccion" selected>Restriccion</option>
+                  {% else %}
+                    <option value="Restriccion">Restriccion</option>
+                  {% endif %}
+                  {% if req.tipo == "Calidad" %}
+                    <option value="Calidad" selected>Calidad</option>
+                  {% else %}
+                    <option value="Calidad">Calidad</option>
+                  {% endif %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <!--COSTO-->
+              <div class="col-md-2 clearfix">
+                <label for="costoReq" class="control-label text-right required">Costo</label>
+                <input class="form-control" name="costoReq" id="costoReq" type="text" value="{{ req.costo }}" required="required" data-validation-required-message="Inidique el costo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--URGENCIA-->
+              <div class="col-md-3 clearfix">
+                <label for="urgenciaReq" class="control-label text-right required">Urgencia</label>
+                <select class="form-control" name="urgenciaReq" id="urgenciaReq" type="text" placeholder="Urgencia *" required="required" data-validation-required-message="Inidique la urgencia del requisito">
+                <p class="help-block text-danger"></p>
+                {% if req.urgencia == "Urgente" %}
+                <option value="Urgente" selected>Urgente</option>
+                {% else %}
+                <option value="Urgente">Urgente</option>
+                {% endif %}
+                {% if req.urgencia == "Normal" %}
+                <option value="Normal" selected>Normal</option>
+                {% else %}
+                <option value="Normal">Normal</option>
+                {% endif %}
+                {% if req.urgencia == "Si se puede" %}
+                <option value="Si se puede" selected>Si se puede</option>
+                {% else %}
+                <option value="Si se puede">Si se puede</option>
+                {% endif %}
+                </select>
+              </div>
+              <!--ESTADO-->
+              <div class="col-md-3 clearfix">
+                <label for="estadoReq" class="control-label text-right required">Estado</label>
+                <select class="form-control" name="estadoReq" id="estadoReq" type="text" placeholder="Estado *" required="required" data-validation-required-message="Inidique el estado del requisito">
+                <p class="help-block text-danger"></p>
+                {% if req.urgencia == "Cumple" %}
+                    <option value="Cumple" selected>Cumple</option>
+                {% else %}
+                    <option value="Cumple">Cumple</option>
+                {% endif %}
+                {% if req.urgencia == "No Cumple" %}
+                    <option value="No Cumple" selected>No Cumple</option>
+                {% else %}
+                    <option value="No Cumple">No Cumple</option>
+                {% endif %}
+                </select>
+              </div>
+              <!--REQ USER FOREGIN-->
+              <div class="col-md-3 clearfix">
+                <label for="userReq" class="control-label text-right required">Requisito usuario</label>
+                <select class="form-control" name="userReq" id="userReq" type="text" required="required" data-validation-required-message="Inidique el estado del requisito">
+                <p class="help-block text-danger"></p>
+                  <option value="">Seleccione un requisito</option>
+                  {% for userReq in userReqs %}
+                      {% if req.requisito_usuario_codigo_id == userReq.id %}
+                        <option value="{{userReq.id}}" selected>{{userReq.codigo}}: {{userReq.titulo}}</option>
+                      {% else %}
+                        <option value="{{userReq.id}}">{{userReq.codigo}}: {{userReq.titulo}}</option>
+                      {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <!--DESCRIPCION-->
+              <div class="col-md-11 clearfix">
+                <label for="descripcionReq" class="control-label text-right required">Descripción</label>
+                <input class="form-control" name="descripcionReq" id="descripcionReq" value="{{ req.descripcion }}" required="required" data-validation-required-message="Inidique la descripcion del requisito"></input>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 text-center">
+                <button type="submit" class="btn btn-primary  btn-sm btn-block">Editar</button> &nbsp;
+              </div>
+              <div class="col-lg-6 text-center">
+                <a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:requisitos-sistema' %}">Cancelar</a>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

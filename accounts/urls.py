@@ -19,4 +19,5 @@ urlpatterns = [
     path('usuarios/', views.users, name="usuario"),
     path('proyectos/requisitos-usuario/analisis', views.analisisRU, name="analisis-user-req"),
     path('proyectos/requisitos-sistema/analisis', views.analisisRS, name="analisis-sys-req"),
+    path('proyectos/requisitos-usuario/editar-requisito-sistema/', views.editRequisitoSistema, name='editar-requisito-sistema'),
 ]

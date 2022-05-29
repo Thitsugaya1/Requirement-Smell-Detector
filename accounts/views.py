@@ -700,12 +700,16 @@ def analisisRU(request):
 	analisisReqUsuario = []
 	for requisito in RequisitoDeUsuario.objects.values():
 		if requisito['proyecto_id_id'] == projectDetail['id']:
+			analisis=[]
 			for req in AnalizisRu.objects.values():
 				if requisito['id'] == req['ru_codigo_id']:
-					requisito['smells'] = req
+					analisis += [req]
+			requisito['smells'] = analisis
+			analisisD=[]
 			for req in AnalisisRuDesc.objects.values():
 				if requisito['id'] == req['ru_codigo_id']:
-					requisito['smells_desc'] = req
+					analisisD += [req]
+			requisito['smells_desc'] = analisisD
 			analisisReqUsuario+=[requisito]
 				
 	#print (requisito)
@@ -732,15 +736,18 @@ def analisisRS(request):
 	analisisReqSistema = []
 	for requisito in RequisitoSistema.objects.values():
 		if requisito['proyecto_id_id'] == projectDetail['id']:
+			analisis = []
 			for req in AnalizisRs.objects.values():
-				if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
-					requisito['smells'] = req
-					for req in AnalizisRs.objects.values():
-						if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
-							requisito['smells_desc'] = req
-							analisisReqSistema+=[requisito]
-							break
-	#print(requisito)
+				if requisito['id'] == req['rs_codigo_id']:
+					analisis += [req]
+			requisito['smells'] = analisis
+			analisisD=[]
+			for req in AnalizisRs.objects.values():
+				if requisito['id'] == req['rs_codigo_id']:
+					analisisD += [req]
+			requisito['smells_desc'] = analisisD
+			analisisReqSistema+=[requisito]
+			
 	context = {
 		'admin':administrador,
 		'analisiRSs':analisisReqSistema,
@@ -844,3 +851,26 @@ def editRequisitoUsuario(request):
 		#'formEdit': formEditReq,
 	}
 	return render(request, 'accounts/editUserRequirement.html', context=context)
+
+def editRequisitoSistema(request):
+	username, administrador = Cache.getData()
+	proyecto = CacheProyecto.getProyecto()
+	jefeProyecto = CacheProyectoBoss.getBoss()
+	reqToEdit = CacheRequisito.getRequisito()
+	if username == jefeProyecto:
+		bossProject = True
+	else:
+		bossProject = False
+	
+	for project in Proyecto.objects.values():
+		if project['name'] == proyecto:
+			projectDetail = project
+			break
+
+	for requi in RequisitoDeUsuario.objects.values():
+		if requi['titulo'] == reqToEdit and requi['proyecto_id_id'] == projectDetail['id']:
+			reqToEditT=requi['id']
+			requisitoToEdit = requi
+			break
+
+	requisito = get_object_or_404(RequisitoDeUsuario, pk=reqToEditT)
