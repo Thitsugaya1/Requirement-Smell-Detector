@@ -1,0 +1,90 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+		<br>
+        
+		<div class="row">
+            <!--Sidevar-->
+		    {% include 'accounts/sidebar.html' %}
+
+			<div class="col-md">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Participantes</h5>
+						<div class="col-md-3">
+                        {% if bossProject or admin %}
+							<a class="btn btn-primary  btn-sm btn-block" href="#addParticipante">+ Agregar participante</a>
+						{% endif %}
+                        </div>
+					</div>
+				</div><br>
+
+				<div id="addParticipante" class="modalDialog">
+					<div>
+						<!--a href="#close" title="Close" class="close">X</a-->
+						<div class="modal-header">
+							<h4>Seleccione un Usuario</h4>
+						</div>
+						<form id="userSelect" action="{% url 'accounts:participantes' %}" method="POST">
+							{% csrf_token %}
+							<div class="modal-body form-row field-project">
+								<div class="form-group clearfix">
+									<label for="userSelect" class="col-md-4 control-label text-right required">
+										Usuarios disponibles: 
+									</label>
+									<select name="userSelect" id="userSelect">
+										<option value selected class="form-control">Escoja un usuario</option>
+										{% for user in users %}
+											<option namme="userSelect" value="{{user.nombre_usuario}}" class="form-control">{{user.nombre_usuario}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<div class="row">
+									<div class="col-lg-6 text-center">
+										<button type="submit" class="btn btn-primary  btn-sm btn-block">Agregar</button> &nbsp;
+									</div>
+									<div class="col-lg-6 text-center">
+										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:participantes' %}">Cancelar</a>
+									</div>
+								</div>
+							</div>
+						</form>		    	
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md">
+						<div class="card card-body">
+							<table class="table">
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Correo</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for user in participantes %}
+										<tr>
+											<div class="row user" data-id="{{user.nombre_usuario}}">   
+												<td>{{user.nombre_usuario}}</td>
+												<td>{{user.correo}}</td>
+											</div>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+
+			
+        </div>
+		
+        
+			
+		
+
+{% endblock content %}

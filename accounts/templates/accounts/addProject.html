@@ -1,0 +1,18 @@
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static '/css/main.css' %}">
+
+{% block content %}
+
+<div id="addProject" class="modalDialog">
+	<div>
+		<a href="#close" title="Close" class="close">X</a>
+		<h2>Nuevo Proyecto</h2>
+	    <input class="form-control" id="ProyectName" type="text" placeholder="Nombre del proyecto *" required="required" data-validation-required-message="Inidique el nombre del proyecto">
+	    <p class="help-block text-danger"></p>
+	    <input class="form-control" id="ProyectDescription" type="text" placeholder="Descripcion del proyecto *" required="required" data-validation-required-message="Inidique la descripcion del proyecto">
+	    <p class="help-block text-danger"></p>
+	</div>
+</div>
+
+{% endblock content %}

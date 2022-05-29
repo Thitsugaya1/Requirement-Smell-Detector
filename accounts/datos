@@ -1,0 +1,62 @@
+Cuenta:
+	nombre_usuario
+	correo
+	contraseña
+
+Rol:
+	tipo
+	cuenta
+
+AsignacionProyecto:
+	proyecto_id
+	nombre_usuario
+
+Proyecto:
+	id
+	name
+	descripcion
+
+RequisitoDeUsuario:
+	codigo
+	titulo
+	prioridad
+	tipe
+	fuente
+	estabilidad
+	urgencia
+	estado
+	costo
+	descripcion
+
+	version
+	
+	proyecto_id
+
+AnalizisRu:
+	smell_codigo
+	ru_codigo
+
+RequisitoDeSistema(models.Model):
+	codigo
+	titulo
+	tipe
+	costo
+	urgencia
+	estado
+	descripcion
+	
+	version
+
+	proyecto_id
+	requisito_usuario_codigo
+
+
+AnalizisRs(models.Model):
+	smell_codigo
+	rs_codigo
+
+
+Superuser
+
+nicolas 1q2w3e4r5t6y
+nikholas ryuuzakiL

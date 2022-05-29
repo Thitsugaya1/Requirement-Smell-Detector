@@ -1,0 +1,94 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+		<br>
+
+		<div class="row">
+			<div class="col-md">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Usuarios</h5>
+						<div class="col-md-2">
+							<a class="btn btn-primary  btn-sm btn-block" href="#addUser">+ Agregar usuario</a>
+						</div>
+					</div>
+				</div>
+
+				<div id="addUser" class="modalDialog">
+					<div>
+						<div class="modal-header">
+							<h4>Nuevo Usuario</h4>
+						</div>
+						<div class="modal-body">
+							<form id="NewUser" action="{% url 'accounts:usuario' %}" method="POST">
+								{% csrf_token %}
+								<div class="form-group row">
+								    <!--NOMBRE DE USUARIO-->
+								    <div class="col-md-8 clearfix">
+								        <label for="username" class="control-label text-right required">Nombre usuario*</label>
+								        <input class="form-control" name="username" id="username" type="text" placeholder="Nombre usuario" required="required" data-validation-required-message="Inidique el nombre de usuario">
+								        <p class="help-block text-danger"></p>
+								    </div>
+									<!--ADMIN-->
+								    <div class="col-md-4 clearfix">
+								        <label for="admin" class="control-label text-right required">Administrador*</label>
+								        <select class="form-control" name="admin" id="admin" type="text" placeholder="Administrador" required="required">
+											<option value="Si">Si</option>
+											<option value="No">No</option>
+										</select>
+										<p class="help-block text-danger"></p>
+								    </div>
+									<!--CORREO-->
+								    <div class="col-md-12 clearfix">
+								        <label for="correo" class="control-label text-right required">Correo*</label>
+								        <input class="form-control" name="correo" id="correo" type="text" placeholder="Correo" required="required" data-validation-required-message="Inidique el correo del usuario">
+								        <p class="help-block text-danger"></p>
+								    </div>
+									
+								</div>
+								<div class="row">
+									<div class="col-lg-6 text-center">
+										<button type="submit" class="btn btn-primary  btn-sm btn-block">Agregar</button> &nbsp;
+									</div>
+									<div class="col-lg-6 text-center">
+										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:usuario' %}">Cancelar</a>
+									  </div>
+								</div>
+							</form>
+						</div>
+						
+					</div>
+				</div>
+
+		<br>
+			<div class="card card-body">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Nombre</th>
+							<th>Correo</th>
+							<th>Administrador</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for user in users %}
+							<tr>
+								<div class="row user" data-id="{{user.nombre_usuario}}">   
+									<td>{{user.nombre_usuario}}</td>
+									<td>{{user.correo}}</td>
+									<td>{{user.admin}}</td>
+									<!--td><button class="btn btn-primary">Detalles</button></td-->
+								</div>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}

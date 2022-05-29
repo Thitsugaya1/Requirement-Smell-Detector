@@ -1,0 +1,132 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+
+{% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+      {% endfor %}
+  </ul>
+{% endif %}
+
+<br>
+<div class="row">
+  <!--Sidevar-->
+  {% include 'accounts/sidebar.html' %}
+  <div class="col-md">
+    <div class="card card-body">
+      <div class="container">
+        <div class="col-lg-12 text-center">
+          <h2>Nuevo requisito de usuario</h2>
+        </div>
+
+        <form id="addUserReq" action="{% url 'accounts:agregar-requisito-usuario' %}" method="POST">
+          {% csrf_token %}
+            <div class="form-group row">
+              <!--CODIGO-->
+              <div class="col-md-2 clearfix">
+                <label for="codigoReq" class="control-label text-right required">Codigo</label>
+                <input class="form-control" name="codigoReq" id="codigoReq" type="text" placeholder="{{ total_reqs }}" disabled="disabled" required="required" data-validation-required-message="Inidique el codigo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--TITULO-->
+              <div class="col-md-6 clearfix">
+                <label for="tituloReq" class="control-label text-right required">Titulo</label>
+                <input class="form-control" name="tituloReq" id="tituloReq" type="text" placeholder="Titulo *" required="required" data-validation-required-message="Inidique el titulo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--PRIORIDAD-->
+              <div class="col-md-3 clearfix">
+                <label for="prioridadReq" class="control-label text-right required">Prioridad</label>
+                <select class="form-control" name="prioridadReq" id="prioridadReq" type="text" placeholder="Prioridad *" required="required" data-validation-required-message="Inidique el tipo del requisito">
+                  <p class="help-block text-danger"></p>
+                  <option value="">Prioridad *</option>
+                  <option value="Deseable">Deseable</option>
+                  <option value="No Deseable">No Deseable</option>
+                  <option value="Critico">Critico</option>
+                </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <!--TIPO-->
+                <div class="col-md-3 clearfix">
+                  <label for="tipoReq" class="control-label text-right required">Tipo</label>
+                  <select class="form-control" name="tipoReq" id="tipoReq" type="text" placeholder="Tipo *" required="required" data-validation-required-message="Inidique el tipo del requisito">
+                  <p class="help-block text-danger"></p>
+                    <option value="">Tipo *</option>
+                    <option value="Funcional">Funcional</option>
+                    <option value="No Funcional">No Funcional</option>
+                    <option value="Restriccion">Restriccion</option>
+                    <option value="Calidad">Calidad</option>
+                  </select>
+                </div>
+                <!--FUENTE-->
+                <div class="col-md-3 clearfix">
+                  <label for="fuenteReq" class="control-label text-right required">Fuente</label>
+                  <input class="form-control" name="fuenteReq" id="fuenteReq" type="text" placeholder="Fuente *" required="required" data-validation-required-message="Inidique la fuente del requisito">
+                  <p class="help-block text-danger"></p>
+                </div>
+                <!--ESTABILIDAD-->
+                <div class="col-md-3 clearfix">
+                  <label for="estabilidadReq" class="control-label text-right required">Estabilidad</label>
+                  <select class="form-control" name="estabilidadReq" id="estabilidadReq" type="text" placeholder="Estabilidad *" required="required" data-validation-required-message="Inidique el tipo del requisito">
+                  <p class="help-block text-danger"></p>
+                    <option value="">Estabilidad *</option>
+                    <option value="Transable">Transable</option>
+                    <option value="Intransable">Intransable</option>
+                  </select>
+                </div>
+            </div>
+            <div class="form-group row">
+              <!--COSTO-->
+              <div class="col-md-3 clearfix">
+                <label for="costoReq" class="control-label text-right required">Costo</label>
+                <input class="form-control" name="costoReq" id="costoReq" type="text" placeholder="Costo *" required="required" data-validation-required-message="Inidique el costo del requisito">
+                <p class="help-block text-danger"></p>
+              </div>
+              <!--URGENCIA-->
+              <div class="col-md-3 clearfix">
+                <label for="urgenciaReq" class="control-label text-right required">Urgencia</label>
+                <select class="form-control" name="urgenciaReq" id="urgenciaReq" type="text" placeholder="Urgencia *" required="required" data-validation-required-message="Inidique la urgencia del requisito">
+                <p class="help-block text-danger"></p>
+                  <option value="">Urgencia *</option>
+                  <option value="Urgente">Urgente</option>
+                  <option value="Normal">Normal</option>
+                  <option value="Si se puede">Si se puede</option>
+                </select>
+              </div>
+              <!--ESTADO-->
+              <div class="col-md-3 clearfix">
+                <label for="estadoReq" class="control-label text-right required">Estado</label>
+                <select class="form-control" name="estadoReq" id="estadoReq" type="text" placeholder="Estado *" required="required" data-validation-required-message="Inidique el estado del requisito">
+                <p class="help-block text-danger"></p>
+                  <option value="">Estado *</option>
+                  <option value="Cumple">Cumple</option>
+                  <option value="No Cumple">No Cumple</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <!--DESCRIPCION-->
+              <div class="col-md-10 clearfix">
+                <label for="descripcionReq" class="control-label text-right required">Descripción</label>
+                <textarea class="form-control" name="descripcionReq" id="descripcionReq" placeholder="Descripcion *" required="required" data-validation-required-message="Inidique la descripcion del requisito"></textarea>
+                <p class="help-block text-danger"></p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-6 text-center">
+                <button type="submit" class="btn btn-primary btn-sm btn-block">Agregar</button> &nbsp;
+              </div>
+              <div class="col-lg-6 text-center">
+                <a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:requisitos-usuario' %}">Cancelar</a>
+              </div>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,297 @@
+.NET
+arroba
+3D
+Acceso directo
+Acrobat
+ADSL
+AGP
+AI
+Algoritmo
+Amazon
+AMIBIOS
+Ancho de banda
+Android
+Angular
+AOL
+Apache
+Archivo adjunto
+ASCII
+Attachement
+AutoCad
+AVI
+Backup
+Bandeja de entrada
+Barra de herramientas
+Base de datos
+BASIC
+Bcc
+BIOS
+Bit
+Bookmark
+Boot
+Bps
+Browser
+Buffer
+Bug
+Byte
+C
+C++
+C#
+Cable coaxial
+Cable-módem
+Caché
+Caché de disco
+Celeron
+Chat
+Chip
+Ciberespacio
+Clipboard
+Clave pública
+Clave privada
+Cliente/Servidor
+Cluster
+Comando
+Comprimir
+Controlador
+Cookie
+CPU
+Cursor
+Data
+Data entry
+Database
+Delete
+Directorio
+DirectX
+Disco rígido
+Diskette
+Display
+Django
+DNS
+Domain
+Download
+dpi
+Dynamic HTML
+Elixir
+Encoder
+Encriptar
+Enlace
+Erlang
+Ethernet
+Explorer
+Extranet
+FAQ
+Floppy disk
+Folder
+Font
+Freeware
+FTP
+Gateway
+Giga
+Gigabit
+Gigabyte
+Gigaflop
+GPS
+Hard disk
+Hardware
+Hipertexto
+Hipervínculo
+Holograma
+Home page
+Hosting
+HTML
+HTTP
+Icono
+ICQ
+Image map
+Importar
+Impresora de chorro de tinta
+Impresora de matriz de puntos
+Impresora láser
+Impresora matricial
+Impresora
+Inbox
+Internet
+Internet2
+Intranet
+IOS
+IP
+ISO
+ISP
+Java
+JavaScript
+Jitter
+Joystick
+JPEG
+JPG
+Kernel
+Keyboard
+Keyword
+Kilobit
+Kilobyte
+Kotlin
+LAN Manager
+LAN
+Láser printer
+Láser
+LCD
+Lenguaje de programación
+Link
+Linux
+Login name
+Login
+LPT
+Mac OS
+Mac
+Macintosh
+Mailing list
+Mainframe
+Majordomo
+MB
+Megabit
+Megabyte
+Megahertz
+Memoria caché
+Memoria flash
+Memoria RAM
+Memoria ROM
+Microprocesador
+Mini disc
+Mini DV
+MMX
+Módem
+Módem de 56 K V.90
+MongoDB
+Monitor
+Motherboard
+MP1
+MP2
+MP3
+MP4
+MPEG
+MS-DOS
+Navegador
+Net
+Netiquette
+Netscape
+Network
+Newsgroup
+NodeJs
+Objective-C
+Office
+Online
+Página web
+Paquete
+Pascal
+Password
+Paypreview
+PCMCIA
+PDA
+PDF
+Periférico
+PHP
+Pixel
+Placa aceleradora de gráficos
+Placa aceleradora
+Placa de sonido
+Placa Ethernet
+Placa madre
+Placa
+Player
+Plug & play
+Plug-in
+PnP
+PoP
+POP3
+Portal
+Postscript
+Printer
+Protector de pantalla
+Procesador
+Protocolo
+Proveedor de servicios de Internet
+Puerto infrarrojo IrDA
+Puerto paralelo
+Puerto serial
+Puerto
+Python
+Query
+RAM
+Realidad virtual
+REACT
+Reconocimiento de voz
+Red
+Red de área local
+Resolución
+Ripper
+ROM
+Router
+Ruby
+Rust
+Salvapantalla
+Scala
+Screen
+SDRAM
+Serial
+ScanDisk
+Scheme
+Server
+Servidor
+Shareware
+Sistema operativo
+Sitio web
+Slot
+SMS
+SMTP
+Software
+Spam
+Socket
+SQL
+Subwoofer
+Suite
+Socket
+Super VGA
+Superdisk
+Supervideo
+Swift
+Tarifa plana
+Tarjeta CompactFlash
+TCP/IP
+Telemática
+Toolbar
+Touch pad
+Touch screen
+Troyano
+TypeScript
+Unix
+Unplugged
+URL
+USB
+Usenet
+VHS
+Virtual PC
+Visual Basic .NET
+WAP
+Wap
+Wave
+Web page
+Web site
+Web
+Webcam
+Webmail
+Webmaster
+WebTV
+Windows 2000
+Windows 95
+Windows 98
+Windows CE
+Windows NT Server
+Windows NT Workstation
+Windows NT
+WinZip
+Wireless
+Workstation
+World Wide Web
+WWW
+XGA
+Zip drive
+Zip

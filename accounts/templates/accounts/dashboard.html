@@ -1,0 +1,41 @@
+{%  extends 'accounts/main.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% include 'accounts/status.html' %}
+
+<br>
+	<div class="col-md-12">
+		<hr>
+		<h5>Estadisticas:</h5>
+		<hr>
+
+		<div class="card card-body">
+		
+			<div class="col-md-2">
+			</div>
+			<table class="table table-sm">
+				<tr>
+					<th>Proyecto</th>
+					<th>Req Usuario</th>
+					<th>Req Sistema</th>
+					<th>Smells</th>
+				</tr>
+			{% for stat in stats %}
+				<tr>
+					<div class="row project">   
+		                <td>{{stat.name}}</td>
+		                <td>{{stat.totalRU}}</td>
+		                <td>{{stat.totalRS}}</td>
+		                <td>{{stat.smells}}</td>
+		            </div>
+		        </tr>
+		    {% endfor %}
+			</table>
+		</div>
+		
+	</div>
+
+
+{% endblock %}
+

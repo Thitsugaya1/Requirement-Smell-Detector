@@ -1,0 +1,129 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+		<br>
+
+		<div class="row">
+			<div class="col-md">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Proyectos</h5>
+						<div class="col-md-2">
+							<a class="btn btn-primary  btn-sm btn-block" href="#showProject">Revisar Proyecto</a>
+						</div>
+						<div class="col-md-2">
+							{% if admin %}
+							<a class="btn btn-primary  btn-sm btn-block" href="#addProject">+ Agregar proyecto</a>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+
+				<div id="showProject" class="modalDialog">
+					<div>
+						<!--a href="#close" title="Close" class="close">X</a-->
+						<div class="modal-header">
+							<h4>Seleccione un proyecto</h4>
+						</div>
+						<form id="projectDetailSelect" action="{% url 'accounts:proyecto' %}" method="POST">
+							{% csrf_token %}
+							<div class="modal-body form-row field-project">
+								<div class="form-group clearfix">
+									<label for="projectDetailSelect" class="control-label text-right required">
+										Proyectos disponibles: 
+									</label>
+									<select class="form-control" name="projectDetailSelect" id="projectDetailSelect" type="text">
+										<option value selected class="form-control">Escoja un proyecto</option>
+										{% for project in projects %}
+											<option namme="projecSelected" value="{{project.name}}" class="form-control">{{project.name}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="modal-footer submit-row">
+								<div class="row">
+									<div class="col-md-6 text-center">
+										<button type="submit" class="btn btn-primary btn-sm btn-block">Ver Detalle</button> &nbsp;
+									</div>
+									<div class="col-lg-6 text-center">
+										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:proyecto' %}">Cancelar</a>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+				<div id="addProject" class="modalDialog">
+					<div>
+						<!--a href="#close" title="Close" class="close">X</a-->
+						<div class="modal-header">
+							<h4>Nuevo Proyecto</h4>
+						</div>
+						<form id="NewProject" action="{% url 'accounts:proyecto' %}" method="POST" class="post-form">
+							{% csrf_token %}
+							<div class="modal-body">
+								{{form|crispy}}
+							</div>
+							<div class="modal-footer">
+								<div class="row">
+									<div class="col-lg-6 text-center">
+										<button type="submit" class="btn btn-primary  btn-sm btn-block">Agregar</button> &nbsp;
+									</div>
+									<div class="col-lg-6 text-center">
+										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:proyecto' %}">Cancelar</a>
+									</div>
+								</div>
+							</div>
+						</form>				    	
+					</div>
+				</div>
+
+		<br>
+
+				<div class="card card-body">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>Nombre</th>
+								<th>Descripción</th>
+								<th>Estado</th>
+							</tr>
+						</thead>
+						<tbody>
+						{% for project in projects %}
+							<tr>
+								<div class="row project" data-id="{{project.name}}">   
+									<td>{{project.name}}</td>
+									<td>{{project.descripcion}}</td>
+									<td>{{project.estado}}</td>
+								</div>
+							</tr>
+						{% endfor %}
+						</tbody>				
+					</table>
+				</div>
+			</div>
+			
+		</div>
+
+{% endblock content %}
+				<!--{% for project in projects %}
+			         Proyecto
+				    <tr>    
+				        <div class="row project">   
+				                <td>{{project.name}}</td>   
+				                <td>{{project.descripcion}}</td>
+				                <td>{{project.estado}}</td>
+				                <td href="{% url 'projectsDash' %}"><button>Detalles</button></td>
+
+				                label href="{% url 'projectsDash' %}">Detalles</label>
+				                <{% if project.link %}
+				                    <p><a href="{{project.link}}">Más información</a></p>
+				                {% endif %} 
+				            </div>
+				        </div>
+				    </tr>
+			    {% endfor %} -->

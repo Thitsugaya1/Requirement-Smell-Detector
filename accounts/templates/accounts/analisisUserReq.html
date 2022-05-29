@@ -1,0 +1,102 @@
+{% extends 'accounts/main.html' %}
+
+{% block content %}
+
+    <br>
+
+    <div class="row">
+        <!--Sidevar-->
+        {% include 'accounts/sidebar.html' %}
+        <div class="col-md">
+            <div class="card card-body">
+                <div class="row">
+                    <h5>Analisis: Requisitos de Usuario</h5>
+                </div>
+            </div>
+            <br>
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="pills-Titulo-tab" data-toggle="pill" href="#pills-Titulo" role="tab" aria-controls="pills-Titulo" aria-selected="true">Titulo</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="pills-Descripcion-tab" data-toggle="pill" href="#pills-Descripcion" role="tab" aria-controls="pills-Descripcion" aria-selected="false">Descripcion</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-Titulo" role="tabpanel" aria-labelledby="pills-Titulo-tab">
+                    <div class="accordion" id="accordionTitle">
+                        {% for req in analisisRUs %}
+                        <div class="card">
+                            <div class="card-header" id="headingOne">
+                                <h5 class="mb-0">
+                                <label class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#t-{{req.id}}" aria-expanded="false" aria-controls="t-{{req.id}}">
+                                    {{req.codigo}}: {{req.titulo}}
+                                </label>
+                                </h5>
+                            </div>
+                    
+                            <div id="t-{{req.id}}" class="collapse" data-parent="#accordionTitle">
+                                <table class="table" id="titleTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Versión</th>
+                                            <th>Detecciones</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <div class="row">   
+                                                <td>{{req.smells.version}}</td>
+                                                <td>{{req.smells.smell_codigo}}</td>
+                                                <td></td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="pills-Descripcion" role="tabpanel" aria-labelledby="pills-Descripcion-tab">
+                    <div class="accordion" id="accordionDescription">
+                        {% for reqs in analisisRUs %}
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0">
+                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#{{reqs.id}}" aria-expanded="false" aria-controls="{{reqs.id}}">
+                                    {{reqs.codigo}}: {{reqs.titulo}}
+                                </button>
+                                </h5>
+                            </div>
+                    
+                            <div id="{{reqs.id}}" class="collapse" data-parent="#accordionDescription">
+                                <a>Descripción: {{reqs.descripcion}}</a>
+                                <table class="table" id="descTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Versión</th>
+                                            <th>Detecciones</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <div class="row">   
+                                                <td>{{reqs.smells_desc.version}}</td>
+                                                <td>{{reqs.smells_desc.smell_codigo}}</td>
+                                                <td></td>
+                                            </div>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

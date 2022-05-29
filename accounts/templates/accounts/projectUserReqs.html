@@ -1,0 +1,98 @@
+{% extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+		<br>
+        
+		<div class="row">
+            <!--Sidevar-->
+		    {% include 'accounts/sidebar.html' %}
+
+			<div class="col-md">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Requisitos de Usuario</h5>
+						<div class="col-md-3">
+                            <h8>Smells detectados: {{ total_smell }}</h8><br>
+                            <h8>Requisitos actuales: {{ total_user_reqs }}</h8>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:agregar-requisito-usuario' %}">+ Agregar requisito</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:analisis-user-req' %}">Revisar analisis</a>
+                        </div>
+                        <div class=" col-md-2">
+                            <a class="btn btn-primary btn-sm btn-block" href="#editReq">Editar requisito</a>
+                        </div> 
+					</div>
+				</div>
+
+                <div id="editReq" class="modalDialog">
+					<div>
+						<div class="modal-header">
+							<h4>Seleccione un requisito</h4>
+						</div>
+						<form id="editReqSelect" action="{% url 'accounts:requisitos-usuario' %}" method="POST">
+							{% csrf_token %}
+							<div class="modal-body form-row field-project">
+								<div class="form-group clearfix">
+									<label for="editReq" class="control-label text-right required">
+										Requisitos disponibles: 
+									</label>
+									<select class="form-control" name="editReq" id="editReq" type="text">
+										<option value selected class="form-control">Escoja un requisito</option>
+										{% for req in reqs %}
+											<option namme="reqSelected" value="{{req.titulo}}" class="form-control">{{req.titulo}}</option>
+										{% endfor %}
+									</select>
+								</div>
+							</div>
+							<div class="modal-footer submit-row">
+								<div class="row">
+									<div class="col-md-6 text-center">
+										<button type="submit" class="btn btn-primary btn-sm btn-block">Editar</button> &nbsp;
+									</div>
+									<div class="col-lg-6 text-center">
+										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:requisitos-usuario' %}">Cancelar</a>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+                <br>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Titulo</th>
+                                        <th>Descripción</th>
+                                        <th>Smells</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for req in reqs %}
+                                        <tr>
+                                            <div class="row" data-id="{{req.id}}">   
+                                                <td>{{req.codigo}}</td>
+                                                <td>{{req.titulo}}</td>
+                                                <td>{{req.descripcion}}</td>
+                                                <td>{{req.cantidad_smells}}</td>
+                                            </div>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+{% endblock content %}

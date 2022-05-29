@@ -1,0 +1,84 @@
+{%  extends 'accounts/main.html' %}
+
+{% block content %}
+{% load static %}
+
+
+	<br>
+	<div class="row">
+		<!--Sidevar-->
+		{%  include 'accounts/sidebar.html' %}
+		<!--info-->
+			
+			<div class="col-sm-10">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Proyecto: {{ projectName }}</h5>
+					</div>
+					<div class="row">
+						<h6>Jefe del proyecto: {{ boss }}</h6>
+						<h6>Total de participantes: {{ participantes }}</h6>
+					</div>
+					
+				</div>
+				
+				<br>
+
+				<div class="row">
+					<div class="col">
+						<div class="col-md">
+							<div class="card text-center text-white  mb-3" id="total-orders">
+								<div class="card-header">
+									<h5 class="card-title">Total de Requisitos</h5>
+								</div>
+								<div>
+									<h1>{{ totalReq }}</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="col-md">
+							<div class="card text-center text-white  mb-3" id="orders-delivered">
+								<div class="card-header">
+									<h5 class="card-title">Total de Smells</h5>
+								</div>
+								<div>
+									<h1>{{ smells }}</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		
+				<div class="row">
+					<div class="col">
+						<div class="col-md">
+							<div class="card text-center text-white  mb-3" id="orders-delivered">
+								<div class="card-header">
+									<h5 class="card-title">Requisitos de Usuario</h5>
+								</div>
+								<div>
+									<h1>{{ userReq }}</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+	
+					<div class="col">
+						<div class="col-md">
+							<div class="card text-center text-white  mb-3" id="orders-pending">
+								<div class="card-header">
+									<h5 class="card-title">Requisitos de Sistema</h5>
+								</div>
+								<div>
+									<h1>{{ sysReq }}</h1>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	</div>
+
+{% endblock content %}

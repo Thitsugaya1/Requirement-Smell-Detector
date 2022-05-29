@@ -1,0 +1,99 @@
+{%  extends 'accounts/main.html' %}
+{% load static %}
+
+{% block content %}
+
+		<br>
+        
+		<div class="row">
+            <!--Sidevar-->
+		    {% include 'accounts/sidebar.html' %}
+
+			<div class="col-md">	
+				<div class="card card-body">
+					<div class="row">
+						<h5>Requisitos de Sistema</h5>
+						<div class="col-md-2">
+                            <h8>Smells detectados: {{ total_smell }}</h8>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:agregar-requisito-sistema' %}">+ Agregar requisito</a>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:analisis-sys-req' %}">Revisar analisis</a>
+                        </div>
+					</div>
+				</div>
+
+				<br>
+                <div class="row">
+                    <div class="col-md">
+                        <div class="card card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Titulo</th>
+                                        <th>Descripción</th>
+                                        <th>Smells</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for req in reqs %}
+                                        <tr>
+                                            <div class="row req" data-id="{{req.id}}">   
+                                                <td>{{req.codigo}}</td>
+                                                <td>{{req.titulo}}</td>
+                                                <td>{{req.descripcion}}</td>
+                                                <td>{{req.cantidad_smells}}
+                                            </div>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+        </div>
+
+{% endblock content %}
+
+<!--div id="addSysReq" class="modalDialog">
+					<div>
+						<a href="#close" title="Close" class="close">X</a>
+						<div class="modal-header">
+                            <h4>Agregar requisito de sistema</h4>
+						</div>
+                        <div class="modal-body">
+                            <form id="sysReq" action="{% url 'accounts:requisitos-sistema' %}" method="POST">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="form-row field-project">
+                                        <div class="form-group clearfix col-sd-1 validate-input">
+                                            <label name="codigo" class="control-label text-right required">
+                                                Codigo
+                                            </label>
+                                            <input type="text" name="codigo" placeholder="Codigo"></input>
+                                        </div>
+                                        <div class="form-group clearfix col-md-4">
+                                            <!--label name="codigo" class="control-label text-right required">
+                                                Codigo
+                                            </label>
+                                            <input type="text" name="codigo" placeholder="Codigo"></input>
+                                        </div>
+                                        <div class="form-group clearfix col-sd-1">
+                                            <!--label name="codigo" class="control-label text-right required">
+                                                Codigo
+                                            </label>
+                                            <input type="text" name="codigo" placeholder="Codigo"></input>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>       
+                        <div class="modal-footer submit-row">
+							<button type="submit" class="btn btn-primary  btn-sm btn-block">Agregar requisito</button>
+						</div>			    	
+					</div>
+				</div-->
