@@ -41,21 +41,24 @@
                                         <tr>
                                             <th>Versión</th>
                                             <th>Detecciones</th>
-                                            <th></th>
+                                            <th>Feedback</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for analisis in req.smells %}
                                         <tr>
                                             <div class="row">   
-                                                <td>{{req.smells.version}}</td>
-                                                <td>{{req.smells.smell_codigo}}</td>
-                                                <td></td>
+                                                <td>{{analisis.version}}</td>
+                                                <td>{{analisis.smell_codigo}}</td>
+                                                <td>{{analisis.feedback}}</td>
                                             </div>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <br>
                         {% endfor %}
                     </div>
                 </div>
@@ -78,21 +81,24 @@
                                         <tr>
                                             <th>Versión</th>
                                             <th>Detecciones</th>
-                                            <th></th>
+                                            <th>Feedback</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for analisisDesc in reqs.smells_desc %}
                                         <tr>
                                             <div class="row">   
-                                                <td>{{reqs.smells_desc.version}}</td>
-                                                <td>{{reqs.smells_desc.smell_codigo}}</td>
-                                                <td></td>
+                                                <td>{{analisisDesc.version}}</td>
+                                                <td>{{analisisDesc.smell_codigo}}</td>
+                                                <td>{{analisisDesc.feedback}}</td>
                                             </div>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <br>
                         {% endfor %}
                     </div>
                 </div>

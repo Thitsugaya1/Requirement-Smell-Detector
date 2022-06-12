@@ -163,9 +163,11 @@ class Analisis():
         for word in self.comparativos:
             if self.requisitoNormal.__contains__(word.lower()):
                 self.analisis += "Sm-09:Ambiguo "
+                self.wordsAnalisis += word+" "
                 break
             if self.descripcionNormal.__contains__(word.lower()):
                 self.analisisDesc += "Sm-09:Ambiguo "
+                self.wordsAnalisisDesc += word+" "
                 break
         self.smell10()
 
@@ -173,9 +175,11 @@ class Analisis():
         for sentence in self.comparativos:
             if self.requisitoNormal.__contains__(sentence.lower()):
                 self.analisis += "Sm-10:Frases-Comparativas "
+                self.wordsAnalisis += sentence+" "
                 break
             if self.descripcionNormal.__contains__(sentence.lower()):
                 self.analisisDesc += "Sm-10:Frases-Comparativas "
+                self.wordsAnalisisDesc += sentence+" "
                 break
         self.smell11()
 
@@ -183,9 +187,11 @@ class Analisis():
         for sentence in self.loopholes:
             if self.requisitoNormal.__contains__(sentence):
                 self.analisis += "Sm-11:Loopholes "
+                self.wordsAnalisis += sentence+" "
                 break
             if self.descripcionNormal.__contains__(sentence):
                 self.analisisDesc += "Sm-11:Loopholes "
+                self.wordsAnalisisDesc += sentence+" "
                 break
         self.smell12()
 
@@ -193,10 +199,12 @@ class Analisis():
         for word in self.requisito:
             if word.lower() == "no":
                 self.analisis += "Sm-12:Oraciones-Negativas "
+                self.wordsAnalisis += "no "
                 break
         for word in self.descripcion:
             if word.lower() == "no":
                 self.analisisDesc += "Sm-12:Oraciones-Negativas "
+                self.wordsAnalisisDesc += "no "
                 break
         self.smell14()
 
@@ -204,9 +212,11 @@ class Analisis():
         for sentence in self.openEndTerm:
             if self.requisitoNormal.__contains__(sentence):
                 self.analisis += "Sm-14:Terminos-de-inicio-final "
+                self.wordsAnalisis += sentence+" "
                 break
             if self.descripcionNormal.__contains__(sentence):
                 self.analisisDesc += "Sm-14:Terminos-de-inicio-final "
+                self.wordsAnalisisDesc += sentence+" "
                 break
         self.smell16()
 
@@ -219,20 +229,25 @@ class Analisis():
 
     def smell17(self):
         for word in self.abreviatura:
-            if self.requisito.__contains__(word.lower()):
-                self.analisis +="Sm-17:Siglas/Abreviaturas "
-                break
-            if self.descripcion.__contains__(word.lower()):
-                self.analisisDesc +="Sm-17:Siglas/Abreviaturas "
-                break
+            for word2 in self.requisito:
+                if word2 == (word.lower()):
+                    self.analisis +="Sm-17:Siglas/Abreviaturas "
+                    self.wordsAnalisis += word+" "
+                    break
+            for word2 in self.descripcion:
+                if word2 == (word.lower()):
+                    self.analisisDesc +="Sm-17:Siglas/Abreviaturas "
+                    self.wordsAnalisis += word+" "
+                    break
         self.smell18()
 
     def smell18(self):
         if self.codigo.__contains__("RU"):
             for word in self.tecnisismos:
-                if self.requisito.__contains__(word.lower()):
-                    self.analisis += "Sm-18:Tecnisismos-en-RU "
-                    break
+                for word2 in self.requisito:
+                    if word2 == (word.lower()):
+                        self.analisis += "Sm-18:Tecnisismos-en-RU "
+                        break
                 if self.descripcion.__contains__(word.lower()):
                     self.analisisDesc += "Sm-18:Tecnisismos-en-RU "
                     break

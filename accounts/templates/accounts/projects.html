@@ -37,7 +37,7 @@
 									<select class="form-control" name="projectDetailSelect" id="projectDetailSelect" type="text">
 										<option value selected class="form-control">Escoja un proyecto</option>
 										{% for project in projects %}
-											<option namme="projecSelected" value="{{project.name}}" class="form-control">{{project.name}}</option>
+											<option namme="projecSelected" value="{{project.id}}" class="form-control">{{project.name}}</option>
 										{% endfor %}
 									</select>
 								</div>
@@ -84,7 +84,7 @@
 		<br>
 
 				<div class="card card-body">
-					<table class="table">
+					<table class="table" >
 						<thead>
 							<tr>
 								<th>Nombre</th>

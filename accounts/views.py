@@ -256,7 +256,7 @@ def projects(request):
 			formDetail = projectSelectForm()
 		else:
 			projectSelected = request.POST['projectDetailSelect']
-			CacheProyecto(projectSelected)
+			CacheProyecto(int(projectSelected))
 			return projectsDetails(request)
 	else:
 		form = projectForms()
@@ -301,7 +301,7 @@ def users(request):
 
 def addSysReq(request):
 	username, administrador = Cache.getData()
-	proyecto = CacheProyecto.getProyecto()
+	proyecto = int(CacheProyecto.getProyecto())
 	jefeProyecto = CacheProyectoBoss.getBoss()
 	if username == jefeProyecto:
 		bossProject = True
@@ -309,19 +309,26 @@ def addSysReq(request):
 		bossProject = False
 
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
 	requisitosUsuario = []
 	for requisito in RequisitoDeUsuario.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
-			for req in AnalizisRu.objects.values():
-				if requisito['id'] == req['ru_codigo_id']:
-						requisitosUsuario += [requisito]
+		if requisito['proyecto_id_id'] == proyecto:
+			requisitosUsuario += [requisito]
+
+	reqs = 1
+	for requisito in RequisitoSistema.objects.values():
+		if requisito['proyecto_id_id'] == proyecto:
+			reqs += 1
+	if reqs < 10:
+		codigoH = "RS00"+str(reqs)
+	else:
+		codigoH = "RS0"+str(reqs)
 
 	if request.method == 'POST':
-		codigo = request.POST['codigoReq']
+		codigo = codigoH
 		titulo = request.POST['tituloReq']
 		tipo = request.POST['tipoReq']
 		costo = request.POST['costoReq']
@@ -374,6 +381,7 @@ def addSysReq(request):
 					analisisDeRSDesc.save()
 					messages.info(request, 'Requisito guardado con exito')
 	context = {
+		'codigo': codigoH,
 		'userReqs': requisitosUsuario,
 		'admin':administrador,
 	}
@@ -381,23 +389,22 @@ def addSysReq(request):
 
 def projectsDetails(request):
 	username, administrador = Cache.getData()
-	proyecto = CacheProyecto.getProyecto()
+	proyecto = int(CacheProyecto.getProyecto())
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
-	idBoss = 0
 	participantes = 0
 	for asignacion in AsignacionJefeProyecto.objects.values():
-		if asignacion['proyecto_id_id'] == projectDetail['id']:
+		if asignacion['proyecto_id_id'] == proyecto:
 			participantes += 1
 			idBoss = asignacion['cuenta_id']
 			break
 
 	for asignacion in AsignacionProyecto.objects.values():
-		if asignacion['proyecto_id_id'] == projectDetail['id']:
+		if asignacion['proyecto_id_id'] == proyecto:
 			participantes += 1
 	
 	boss = " "
@@ -410,16 +417,19 @@ def projectsDetails(request):
 	smells = 0
 	requisitosUsuario = 0
 	for requisito in RequisitoDeUsuario.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
+		if requisito['proyecto_id_id'] == proyecto:
 			requisitosUsuario += 1
 			for req in AnalizisRu.objects.values():
-				if requisito['id'] == req['ru_codigo_id'] and req['smell_codigo'] != "-":
+				if requisito['id'] == req['ru_codigo_id'] and req['version'] == requisito['version'] and req['smell_codigo'] != "-":
+					if req['smell_codigo'] == "Sm-20:Redundancia":
+						smells += 1
+					else:
 						smell = req['smell_codigo'].split(" ")
 						smells += len(smell)
 
 	requisitosSistema = 0
 	for requisito in RequisitoSistema.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
+		if requisito['proyecto_id_id'] == proyecto:
 			requisitosSistema += 1
 			for req in AnalizisRs.objects.values():
 				if requisito['id'] == req['rs_codigo_id'] and req['smell_codigo'] != "-":
@@ -431,7 +441,7 @@ def projectsDetails(request):
 	context = {
 		'user': username,
 		'boss': boss,
-		'projectName': proyecto,
+		'projectName': projectDetail['name'],
 		'smells': smells,
 		'userReq': requisitosUsuario,
 		'sysReq': requisitosSistema,
@@ -443,7 +453,7 @@ def projectsDetails(request):
 
 def participantes(request):
 	username, administrador = Cache.getData()
-	proyecto = CacheProyecto.getProyecto()
+	proyecto = int(CacheProyecto.getProyecto())
 	jefeProyecto = CacheProyectoBoss.getBoss()
 
 	if username == jefeProyecto:
@@ -452,17 +462,17 @@ def participantes(request):
 		bossProject = False
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 
 	participant = []
 	for asignacion in AsignacionJefeProyecto.objects.values():
-		if asignacion['proyecto_id_id'] == projectDetail['id']:
+		if asignacion['proyecto_id_id'] == proyecto:
 			participant += [asignacion['cuenta_id']]
 			break
 	for asignacion in AsignacionProyecto.objects.values():
-		if asignacion['proyecto_id_id'] == projectDetail['id']:
+		if asignacion['proyecto_id_id'] == proyecto:
 			participant += [asignacion['cuenta_id']]
 
 	usersNoParticipa = []
@@ -499,7 +509,7 @@ def participantes(request):
 
 def projectsUserReqs(request):
 	username, administrador = Cache.getData()
-	proyecto = CacheProyecto.getProyecto()
+	proyecto = int(CacheProyecto.getProyecto())
 	jefeProyecto = CacheProyectoBoss.getBoss()
 
 	if username == jefeProyecto:
@@ -508,37 +518,33 @@ def projectsUserReqs(request):
 		bossProject = False
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
-	smells = 0
+	
 	requisitosUsuario = []
 	for requisito in RequisitoDeUsuario.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
-			
+		if requisito['proyecto_id_id'] == proyecto:
+			smells = 0
 			for req in AnalizisRu.objects.values():
 				if requisito['id'] == req['ru_codigo_id']:
 					if req['smell_codigo'] != "-":
 						smell = req['smell_codigo'].split(" ")
 						smells += len(smell)
-					else:
-						smells += 0
+						
 			for reqs in AnalisisRuDesc.objects.values():
 				if requisito['id'] == reqs['ru_codigo_id']:
 					if reqs['smell_codigo'] != "-":
 						smellsDesc = reqs['smell_codigo'].split(" ")
 						smells += len(smellsDesc)
-					else:
-						smells += 0
 					
-					requisito['cantidad_smells'] = smells
-					requisitosUsuario += [requisito]
+			requisito['cantidad_smells'] = smells
+			requisitosUsuario += [requisito]
 
 	if request.method == 'POST':
 		reqEdit = request.POST['editReq']
-		CacheRequisito(reqEdit)
-		return editRequisitoUsuario(request)
+		return editRequisitoUsuario(request, reqEdit)
 
 	context = {
 		'bossProject': bossProject,
@@ -560,7 +566,7 @@ def projectsSysReqs(request):
 		bossProject = False
 
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 
@@ -568,7 +574,7 @@ def projectsSysReqs(request):
 		
 	requisitosSistema = []
 	for requisito in RequisitoSistema.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
+		if requisito['proyecto_id_id'] == proyecto:
 			for req in AnalizisRs.objects.values():
 				if requisito['id'] == req['rs_codigo_id']:
 					if req['smell_codigo'] != "-":
@@ -580,11 +586,16 @@ def projectsSysReqs(request):
 						requisito['smells'] = req['smell_codigo']
 						requisito['cantidad_smells'] = 0
 					requisitosSistema += [requisito]
+
+	if request.method == 'POST':
+		reqEdit = request.POST['editReq']
+		return editRequisitoSistema(request, reqEdit)
 	
 	context = {
 		'bossProject': bossProject,
 		'admin': administrador,
 		'reqs': requisitosSistema,
+		'total_sys_reqs': len(requisitosSistema),
 		'total_smell': smells,
 	}
 
@@ -600,13 +611,13 @@ def addUserReq(request):
 		bossProject = False
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
-	reqs = 0
+	reqs = 1
 	for requisito in RequisitoDeUsuario.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
+		if requisito['proyecto_id_id'] == proyecto:
 			reqs += 1
 
 	if reqs < 10:
@@ -693,13 +704,13 @@ def analisisRU(request):
 		bossProject = False
 
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
 	analisisReqUsuario = []
 	for requisito in RequisitoDeUsuario.objects.values():
-		if requisito['proyecto_id_id'] == projectDetail['id']:
+		if requisito['proyecto_id_id'] == proyecto:
 			analisis=[]
 			for req in AnalizisRu.objects.values():
 				if requisito['id'] == req['ru_codigo_id']:
@@ -712,7 +723,6 @@ def analisisRU(request):
 			requisito['smells_desc'] = analisisD
 			analisisReqUsuario+=[requisito]
 				
-	#print (requisito)
 	context = {
 		'admin':administrador,
 		'analisisRUs':analisisReqUsuario,
@@ -729,7 +739,7 @@ def analisisRS(request):
 		bossProject = False
 
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 	
@@ -754,28 +764,25 @@ def analisisRS(request):
 	}
 	return render(request, 'accounts/analisisSysReq.html', context=context)
 
-def editRequisitoUsuario(request):
+def editRequisitoUsuario(request, idReq):
 	username, administrador = Cache.getData()
 	proyecto = CacheProyecto.getProyecto()
 	jefeProyecto = CacheProyectoBoss.getBoss()
-	reqToEdit = CacheRequisito.getRequisito()
 	if username == jefeProyecto:
 		bossProject = True
 	else:
 		bossProject = False
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 
 	for requi in RequisitoDeUsuario.objects.values():
-		if requi['titulo'] == reqToEdit and requi['proyecto_id_id'] == projectDetail['id']:
-			reqToEditT=requi['id']
+		if requi['id'] == idReq:
 			requisitoToEdit = requi
-			break
 
-	requisito = get_object_or_404(RequisitoDeUsuario, pk=reqToEditT)
+	requisito = get_object_or_404(RequisitoDeUsuario, pk=idReq)
 	
 	
 	if request.method == 'POST':
@@ -812,10 +819,7 @@ def editRequisitoUsuario(request):
 				edit.save()
 				analisis = Analisis()
 				resultado, resultadoDesc, feedbacktitle, feedbackdesc = analisis.iniciarAnalisis(titulo, "RU", descripcion)
-				for sysRequi in RequisitoDeUsuario.objects.values():
-					if sysRequi['titulo'] == titulo:
-						idReq = sysRequi['id']
-						break
+				
 				if resultado == "":
 					resultado = "-"
 					feedbacktitle = "-"
@@ -852,25 +856,82 @@ def editRequisitoUsuario(request):
 	}
 	return render(request, 'accounts/editUserRequirement.html', context=context)
 
-def editRequisitoSistema(request):
+def editRequisitoSistema(request, idReq):
 	username, administrador = Cache.getData()
 	proyecto = CacheProyecto.getProyecto()
 	jefeProyecto = CacheProyectoBoss.getBoss()
-	reqToEdit = CacheRequisito.getRequisito()
 	if username == jefeProyecto:
 		bossProject = True
 	else:
 		bossProject = False
 	
 	for project in Proyecto.objects.values():
-		if project['name'] == proyecto:
+		if project['id'] == proyecto:
 			projectDetail = project
 			break
 
-	for requi in RequisitoDeUsuario.objects.values():
-		if requi['titulo'] == reqToEdit and requi['proyecto_id_id'] == projectDetail['id']:
-			reqToEditT=requi['id']
+	for requi in RequisitoSistema.objects.values():
+		if requi['id'] == idReq:
 			requisitoToEdit = requi
 			break
 
-	requisito = get_object_or_404(RequisitoDeUsuario, pk=reqToEditT)
+	requisito = get_object_or_404(RequisitoSistema, pk=idReq)
+
+	if request.method == 'POST':
+		if not(request.POST.__contains__('editReq')):
+			codigo = requisitoToEdit['codigo']
+			titulo = request.POST['tituloReqEdit']
+			tipo = request.POST['tipoReq']
+			costo = request.POST['costoReq']
+			urgencia = request.POST['urgenciaReq']
+			estado = request.POST['estadoReq']
+			descripcion = request.POST['descripcionReq']
+			userReq = request.POST['userReq']
+			version = int(requisitoToEdit['version'])+1
+
+			data = {
+				'codigo':codigo,
+				'titulo':titulo, 
+				'tipo': tipo, 
+				'costo': costo,
+				'urgencia': urgencia, 
+				'estado': estado, 
+				'descripcion': descripcion,
+				'version': version,
+				'proyecto_id': projectDetail['id'], 
+				'requisito_usuario_codigo':userReq
+			}
+
+			edit = systemRequirementForm(data, instance=requisito)
+			if edit.is_valid():
+				edit.save()
+				analisis = Analisis()
+				resultado, resultadoDesc = analisis.iniciarAnalisis(titulo, "RS", descripcion)
+				
+				if resultado == "":
+					resultado = "-"
+				if resultadoDesc == "":
+					resultadoDesc = "-"
+				dataAnalisis = {
+					'smell_codigo': resultado,
+					'version':version,
+					'rs_codigo': idReq
+				}
+				dataAnalisisDesc = {
+					'smell_codigo': resultadoDesc,
+					'version':version,
+					'rs_codigo': idReq
+				}
+				analisisDeRS = analisisRSform(dataAnalisis)
+				if analisisDeRS.is_valid():
+					analisisDeRS.save()
+					analisisDeRSDesc = analisisRSDescform(dataAnalisisDesc)
+					if analisisDeRSDesc.is_valid():
+						analisisDeRSDesc.save()
+						messages.info(request, 'Requisito guardado con exito')
+	context = {
+		'admin':administrador,
+		'req':requisitoToEdit,
+		#'formEdit': formEditReq,
+	}
+	return render(request, 'accounts/editSysRequirement.html', context=context)
