@@ -44,7 +44,7 @@
 									<select class="form-control" name="editReq" id="editReq" type="text">
 										<option value selected class="form-control">Escoja un requisito</option>
 										{% for req in reqs %}
-											<option namme="reqSelected" value="{{req.id}}" class="form-control">{{req.titulo}}</option>
+											<option namme="reqSelected" value="{{req.id}}" class="form-control">{{req.codigo}}: {{req.titulo}}</option>
 										{% endfor %}
 									</select>
 								</div>

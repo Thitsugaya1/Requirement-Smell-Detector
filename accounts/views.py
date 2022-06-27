@@ -107,23 +107,38 @@ def home(request):
 			total_rs = 0
 			smells = 0
 			reqs = []
-			for userReq in RequisitoDeUsuario.objects.values():
-				if project['id'] == userReq['proyecto_id_id']:
-					reqs += [userReq['id']]
+			for requisito in RequisitoDeUsuario.objects.values():
+				if requisito['proyecto_id_id'] == project['id']:
 					total_ru += 1
-			for sysReq in RequisitoSistema.objects.values():
-				if project['id'] == sysReq['proyecto_id_id']:
+					smells_req =0
+					for req in AnalizisRu.objects.values():
+						if requisito['id'] == req['ru_codigo_id'] and requisito['version'] == req['version']:
+							if req['smell_codigo'] != "-":
+								smell = req['smell_codigo'].split(" ")
+								smells_req += len(smell)
+								
+					for reqs in AnalisisRuDesc.objects.values():
+						if requisito['id'] == reqs['ru_codigo_id'] and requisito['version'] == req['version']:
+							if reqs['smell_codigo'] != "-":
+								smellsDesc = reqs['smell_codigo'].split(" ")
+								smells_req += len(smellsDesc)
+					smells += smells_req
+			for requisito in RequisitoSistema.objects.values():
+				if requisito['proyecto_id_id'] == project['id']:
 					total_rs += 1
-					reqs += [sysReq['id']]
-			for req in reqs:
-				for userReqSmells in AnalizisRu.objects.values():
-					if req == userReqSmells['ru_codigo_id'] and userReqSmells['smell_codigo'] != "-":
-						smell = userReqSmells['smell_codigo'].split(" ")
-						smells += len(smell)
-				for sysReqSmells in AnalizisRs.objects.values():
-					if req == sysReqSmells['rs_codigo_id'] and sysReqSmells['smell_codigo'] != "-":
-						smell = sysReqSmells['smell_codigo'].split(" ")
-						smells += len(smell)
+					smells_req = 0
+					for req in AnalizisRs.objects.values():
+						if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
+							if req['smell_codigo'] != "-":
+								smell = req['smell_codigo'].split(" ")
+								smells_req += len(smell)
+					for req in AnalizisRsDesc.objects.values():
+						if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
+							if req['smell_codigo'] != "-":
+								smell = req['smell_codigo'].split(" ")
+								smells_req += len(smell)
+					smells += smells_req
+
 			total_smells += smells
 			stats += [{
 				'name':name, 
@@ -144,7 +159,7 @@ def home(request):
 				projectsUser += [project]
 		
 		for project in AsignacionJefeProyecto.objects.values():
-			if project['cuenta_id'] == idUser:
+			if project['cuenta_id'] == idUser and not(projectsUser.__contains__(project)):
 				projectsUser += [project]
 		
 		num_system_requirements = 0
@@ -419,22 +434,36 @@ def projectsDetails(request):
 	for requisito in RequisitoDeUsuario.objects.values():
 		if requisito['proyecto_id_id'] == proyecto:
 			requisitosUsuario += 1
+			smells_req =0
 			for req in AnalizisRu.objects.values():
-				if requisito['id'] == req['ru_codigo_id'] and req['version'] == requisito['version'] and req['smell_codigo'] != "-":
-					if req['smell_codigo'] == "Sm-20:Redundancia":
-						smells += 1
-					else:
+				if requisito['id'] == req['ru_codigo_id'] and requisito['version'] == req['version']:
+					if req['smell_codigo'] != "-":
 						smell = req['smell_codigo'].split(" ")
-						smells += len(smell)
+						smells_req += len(smell)
+						
+			for reqs in AnalisisRuDesc.objects.values():
+				if requisito['id'] == reqs['ru_codigo_id'] and requisito['version'] == req['version']:
+					if reqs['smell_codigo'] != "-":
+						smellsDesc = reqs['smell_codigo'].split(" ")
+						smells_req += len(smellsDesc)
+			smells += smells_req
 
 	requisitosSistema = 0
 	for requisito in RequisitoSistema.objects.values():
 		if requisito['proyecto_id_id'] == proyecto:
 			requisitosSistema += 1
+			smells_req = 0
 			for req in AnalizisRs.objects.values():
-				if requisito['id'] == req['rs_codigo_id'] and req['smell_codigo'] != "-":
+				if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
+					if req['smell_codigo'] != "-":
 						smell = req['smell_codigo'].split(" ")
-						smells += len(smell)
+						smells_req += len(smell)
+			for req in AnalizisRsDesc.objects.values():
+				if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
+					if req['smell_codigo'] != "-":
+						smell = req['smell_codigo'].split(" ")
+						smells_req += len(smell)
+			smells += smells_req
 	
 	totalReq = requisitosSistema + requisitosUsuario
 
@@ -524,23 +553,25 @@ def projectsUserReqs(request):
 	
 	
 	requisitosUsuario = []
+	smells = 0
 	for requisito in RequisitoDeUsuario.objects.values():
 		if requisito['proyecto_id_id'] == proyecto:
-			smells = 0
+			smells_req = 0
 			for req in AnalizisRu.objects.values():
-				if requisito['id'] == req['ru_codigo_id']:
+				if requisito['id'] == req['ru_codigo_id'] and requisito['version'] == req['version']:
 					if req['smell_codigo'] != "-":
 						smell = req['smell_codigo'].split(" ")
-						smells += len(smell)
+						smells_req += len(smell)
 						
 			for reqs in AnalisisRuDesc.objects.values():
-				if requisito['id'] == reqs['ru_codigo_id']:
+				if requisito['id'] == reqs['ru_codigo_id'] and requisito['version'] == req['version']:
 					if reqs['smell_codigo'] != "-":
 						smellsDesc = reqs['smell_codigo'].split(" ")
-						smells += len(smellsDesc)
+						smells_req += len(smellsDesc)
 					
-			requisito['cantidad_smells'] = smells
+			requisito['cantidad_smells'] = smells_req
 			requisitosUsuario += [requisito]
+			smells += smells_req
 
 	if request.method == 'POST':
 		reqEdit = request.POST['editReq']
@@ -575,17 +606,20 @@ def projectsSysReqs(request):
 	requisitosSistema = []
 	for requisito in RequisitoSistema.objects.values():
 		if requisito['proyecto_id_id'] == proyecto:
+			smells_req = 0
 			for req in AnalizisRs.objects.values():
-				if requisito['id'] == req['rs_codigo_id']:
+				if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
 					if req['smell_codigo'] != "-":
 						smell = req['smell_codigo'].split(" ")
-						smells += len(smell)
-						requisito['smells'] = req['smell_codigo']
-						requisito['cantidad_smells'] = len(smell)
-					else:
-						requisito['smells'] = req['smell_codigo']
-						requisito['cantidad_smells'] = 0
-					requisitosSistema += [requisito]
+						smells_req += len(smell)
+			for req in AnalizisRsDesc.objects.values():
+				if requisito['id'] == req['rs_codigo_id'] and requisito['version'] == req['version']:
+					if req['smell_codigo'] != "-":
+						smell = req['smell_codigo'].split(" ")
+						smells_req += len(smell)
+			requisito['cantidad_smells'] = smells_req
+			requisitosSistema += [requisito]
+			smells += smells_req
 
 	if request.method == 'POST':
 		reqEdit = request.POST['editReq']

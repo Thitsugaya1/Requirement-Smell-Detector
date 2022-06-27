@@ -29,18 +29,17 @@
 						</div>
 						<form id="projectDetailSelect" action="{% url 'accounts:proyecto' %}" method="POST">
 							{% csrf_token %}
-							<div class="modal-body form-row field-project">
-								<div class="form-group clearfix">
-									<label for="projectDetailSelect" class="control-label text-right required">
-										Proyectos disponibles: 
-									</label>
-									<select class="form-control" name="projectDetailSelect" id="projectDetailSelect" type="text">
-										<option value selected class="form-control">Escoja un proyecto</option>
-										{% for project in projects %}
-											<option namme="projecSelected" value="{{project.id}}" class="form-control">{{project.name}}</option>
-										{% endfor %}
-									</select>
-								</div>
+							<div class="modal-body form-row field-project form-group clearfix">
+								<label for="projectDetailSelect" class="control-label text-right required">
+									Proyectos disponibles: 
+								</label>
+								<select class="form-control" name="projectDetailSelect" id="projectDetailSelect" type="text">
+									<option value selected class="form-control">Escoja un proyecto</option>
+									{% for project in projects %}
+										<option namme="projecSelected" value="{{project.id}}" class="form-control">{{project.name}}</option>
+									{% endfor %}
+								</select>
+								
 							</div>
 							<div class="modal-footer submit-row">
 								<div class="row">
