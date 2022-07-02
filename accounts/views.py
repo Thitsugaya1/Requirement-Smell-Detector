@@ -574,7 +574,7 @@ def projectsUserReqs(request):
 			smells += smells_req
 
 	if request.method == 'POST':
-		reqEdit = request.POST['editReq']
+		reqEdit = int(request.POST['editReq'])
 		return editRequisitoUsuario(request, reqEdit)
 
 	context = {
@@ -622,7 +622,7 @@ def projectsSysReqs(request):
 			smells += smells_req
 
 	if request.method == 'POST':
-		reqEdit = request.POST['editReq']
+		reqEdit = int(request.POST['editReq'])
 		return editRequisitoSistema(request, reqEdit)
 	
 	context = {
@@ -815,6 +815,7 @@ def editRequisitoUsuario(request, idReq):
 	for requi in RequisitoDeUsuario.objects.values():
 		if requi['id'] == idReq:
 			requisitoToEdit = requi
+			break
 
 	requisito = get_object_or_404(RequisitoDeUsuario, pk=idReq)
 	

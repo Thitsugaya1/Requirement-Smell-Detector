@@ -50,14 +50,16 @@
 								</div>
 							</div>
 							<div class="modal-footer submit-row">
-								<div class="row">
+                                <div class="row">
+								    <div class="col-md-6 text-center">
+										<a id="cancel" class="btn btn-primary btn-sm btn-block" href="{% url 'accounts:requisitos-usuario' %}">Cerrar</a>
+									</div>
+
 									<div class="col-md-6 text-center">
 										<button type="submit" class="btn btn-primary btn-sm btn-block">Editar</button> &nbsp;
 									</div>
-									<div class="col-lg-6 text-center">
-										<a id="cancel" class="btn btn-primary  btn-sm btn-block" href="{% url 'accounts:requisitos-usuario' %}">Cancelar</a>
-									</div>
-								</div>
+                                </div>
+								
 							</div>
 						</form>
 					</div>
